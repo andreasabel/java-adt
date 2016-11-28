@@ -1,6 +1,7 @@
 dist
 dist-*
 cabal-dev
+*~
 *.o
 *.hi
 *.chi
@@ -17,3 +18,7 @@ cabal.sandbox.config
 *.eventlog
 .stack-work/
 cabal.project.local
+/test/out/
+/test/*.java
+/src/Lexer.hs
+/src/Parser.hs
