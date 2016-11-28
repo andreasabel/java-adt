@@ -5,9 +5,14 @@ and they will be compiled to Java class hierarchies.
 
 Installation
 ------------
+
+With a running Haskell installation such as the
+[Haskell platform](https://www.haskell.org/platform/),
+simply type into your shell
 ```
 cabal install alex happy java-adt
 ```
+and make sure your `.cabal/bin/` (or similar) is part of your system PATH.
 
 Example 1: Immutable linked lists with default visitor
 ------------------------------------------------------
@@ -160,7 +165,7 @@ Limitations
 
 - Visitors do not support mutually recursive data types.
 - Record types with same constructor name as record name do not produce valid Java. E.g.
-  ```
+  ```haskell
   data R = R { f :: A }
   ```
-  creates two classes with name `R`.
+  creates two classes with name `R` and subsequent Java compilation errors.
