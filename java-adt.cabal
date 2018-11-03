@@ -15,7 +15,12 @@ description:
   (such as abstract syntax trees).  The input syntax is similar to Haskell data types,
   and they will be compiled to Java class hierarchies.
 
-tested-with:        GHC == 7.6.3, GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.1
+tested-with:        GHC == 7.6.3
+                    GHC == 7.8.4
+                    GHC == 7.10.3
+                    GHC == 8.0.2
+                    GHC == 8.2.2
+                    GHC == 8.4.4
 
 data-files:         test/Makefile
                     test/*.hs
