@@ -1,5 +1,5 @@
 name:            java-adt
-version:         0.2016.11.28
+version:         0.2018.11.4
 build-type:      Simple
 cabal-version:   >= 1.22
 license:         OtherLicense
