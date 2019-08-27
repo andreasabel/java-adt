@@ -1,7 +1,7 @@
 name:            java-adt
 version:         0.2018.11.4
 build-type:      Simple
-cabal-version:   1.22
+cabal-version:   1.18
 license:         OtherLicense
 license-file:    LICENSE
 author:          Andreas Abel
@@ -21,7 +21,8 @@ tested-with:        GHC == 7.6.3
                     GHC == 8.0.2
                     GHC == 8.2.2
                     GHC == 8.4.4
-                    GHC == 8.6.1
+                    GHC == 8.6.5
+                    GHC == 8.8.1
 
 data-files:         test/Makefile
                     test/*.hs
