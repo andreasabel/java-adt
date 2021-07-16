@@ -1,6 +1,6 @@
 module Printer where
 
-import Prelude hiding ((<>))
+import Prelude hiding ((<>))  -- requires GHC >= 7.6 to not be an error
 
 import Text.PrettyPrint
 import Data.Char (toLower)
