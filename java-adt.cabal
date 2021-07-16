@@ -52,3 +52,10 @@ executable java-adt
                     Parser
                     Printer
                     Syntax
+
+  ghc-options:      -Wall
+                    -fno-warn-name-shadowing
+                    -fno-warn-unused-imports
+
+  if impl(ghc >= 8)
+    ghc-options:    -Wcompat

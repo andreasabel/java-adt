@@ -17,17 +17,18 @@ data Class = Class
   }
 
 -- | Indentation level
+ind :: Int
 ind = 4
 
 -- | Entry point 1: construct visitors for data type.
 
 dataToVisitors :: Options -> Data -> [Class]
-dataToVisitors opt d@(Data id params cs vs) =
+dataToVisitors opt d@(Data _ _ _ vs) =
   map (constrToVisitor opt d) vs
 
 constrToVisitor :: Options -> Data -> Visitor -> Class
-constrToVisitor opt d@(Data id params cs _) (Visitor name rt) =
-  Class id (usesList d) $ render $
+constrToVisitor opt d@(Data x params cs _) (Visitor name rt) =
+  Class x (usesList d) $ render $
     condsep (pubClasses opt) public $
     interface <+> jApp (text name) (genReturnType rt ++ map text params) <+> lbrace
     $+$
@@ -37,16 +38,16 @@ constrToVisitor opt d@(Data id params cs _) (Visitor name rt) =
             parens (jApp (text c) (map text params) <+> var) <> semi)
        cs)
     $+$ rbrace
-  where var = char $ toLower (head id)
+  where var = char $ toLower (head x)
 
 -- | Entry point 2: construct abstract parent classes and subclasses for data type.
 
 dataToClasses :: Options -> Data -> [Class]
-dataToClasses opt d@(Data id params cs vs) = cl : map (constrToClass opt id params vs) cs
+dataToClasses opt d@(Data x params cs vs) = cl : map (constrToClass opt x params vs) cs
   where
-  cl = Class id (usesList d) . render $
+  cl = Class x (usesList d) . render $
     publicOpt $ abstract <+>
-        text "class" <+> jApp (text id) (map text params) <+> lbrace
+        text "class" <+> jApp (text x) (map text params) <+> lbrace
     $+$ (nest ind $ vcat $
          map (\ (Visitor name rt) ->
               public <+> abstract <+> quantReturnType rt <+>
@@ -57,17 +58,17 @@ dataToClasses opt d@(Data id params cs vs) = cl : map (constrToClass opt id para
                 | otherwise      = doc
 
 constrToClass :: Options -> DataId -> [Param] -> [Visitor] -> Constructor -> Class
-constrToClass opt super params vs c@(Constructor id fs) =
-  Class id (usesList c) . render $
-  (publicOpt $ text "class" <+> jApp (text id) (map text params) <+>
+constrToClass opt super params vs c@(Constructor x fs) =
+  Class x (usesList c) . render $
+  (publicOpt $ text "class" <+> jApp (text x) (map text params) <+>
     extends <+> jApp (text super) (map text params) <+> lbrace)
   $+$ (nest ind $
        (vcat (map (\ (Field f t) -> public <+> printType t <+> text f <> semi) fs))
        $+$
-       (public <+> text id <+>
+       (public <+> text x <+>
         parens (cat (punctuate (comma<>space) (map (\ (Field f t) -> printType t <+> text f) fs))) <+>
         lbrace
-        $+$ (nest ind (vcat (map (\ (Field f t) -> this <> dot <> text f <+> equals <+> text f <> semi) fs)))
+        $+$ (nest ind (vcat (map (\ (Field f _) -> this <> dot <> text f <+> equals <+> text f <> semi) fs)))
         $+$ rbrace)
         $+$
          (vcat $ map (\ (Visitor name rt) ->
@@ -106,12 +107,13 @@ quantReturnType (Gen s) = text "<" <> text s <> text ">" <+> text s
 
 genReturnType :: TypeId -> [Doc]
 genReturnType (Gen s) = [text s]
-genReturnType (TypeId s) = []
+genReturnType (TypeId _) = []
 
 condsep :: Bool -> Doc -> Doc -> Doc
 condsep True d1 d2 = d1 <+> d2
 condsep False _ d2 = d2
 
+dot, public, interface, abstract, extends, this, accept, v, visit :: Doc
 dot       = text "."
 public    = text "public"
 interface = text "interface"

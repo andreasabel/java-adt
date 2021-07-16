@@ -108,7 +108,7 @@ Grammar:
 
 module Syntax where
 
-import Data.Foldable
+import Data.Foldable  -- for ghc 7.6
 import Data.Monoid
 
 type FieldId  = String

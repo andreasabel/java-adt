@@ -5,7 +5,7 @@
 
 module Main where
 
-import Data.Functor
+import Data.Functor  -- for ghc 7.6
 
 import System.Environment
 import System.IO

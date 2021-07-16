@@ -2,9 +2,6 @@ module Options where
 
 import Control.Monad
 
-import Data.List (elem)
-import Data.Maybe
-
 import System.Console.GetOpt
 import System.Exit
 import System.IO
@@ -16,12 +13,12 @@ parseCmdLine argv = do
   let (os, ns, errs) = getOpt Permute optDescrs argv
   when (Help `elem` os) $ halt []
   case (ns, errs) of
-    ([n], [])       -> do
+    ([n]   , []) -> do
       (opts, dest) <- foldM (flip doFlag) (emptyOpts, Nothing) os
       return (opts, n, dest)
-    ([n]    , errs) -> halt errs
-    ([]     , errs) -> halt $ "no input file" : errs
-    ((_:_:_), errs) -> halt $ "too many input files (just one allowed)" : errs
+    ([_]    , _) -> halt errs
+    ([]     , _) -> halt $ "no input file" : errs
+    ((_:_:_), _) -> halt $ "too many input files (just one allowed)" : errs
 
 -- | Options for @java-adt@ program.
 data Options = Options
