@@ -21,7 +21,7 @@ Input: List.hs
 ```haskell
 data List A = Nil | Cons { head :: A, tail :: List A }
 ```
-Invokation `java-adt List.hs` prints to standard output:
+Invocation `java-adt List.hs` prints to standard output:
 ```java
 abstract class List<A> {
 }
@@ -40,9 +40,9 @@ class Cons<A> extends List<A> {
     }
 }
 ```
-Invokation: `java-adt -o List.java List.hs` leaves output in `List.java`.
+Invocation: `java-adt -o List.java List.hs` leaves output in `List.java`.
 
-Invokation: `java-adt -d List.hs` outputs same but with default visitor on standard output:
+Invocation: `java-adt -d List.hs` outputs same but with default visitor on standard output:
 ```java
 abstract class List<A> {
     public abstract <R> R accept (ListVisitor<R,A> v);
@@ -85,7 +85,7 @@ data Exp
   | ECall { f :: String, es :: [Exp] }
 --visitor Integer EvalVisitor
 ```
-Invokation `java-ast -o Exp.java Exp.hs` outputs into `Exp.java`:
+Invocation `java-ast -o Exp.java Exp.hs` outputs into `Exp.java`:
 ```java
 import java.util.List;
 
