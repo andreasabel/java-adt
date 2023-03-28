@@ -29,8 +29,8 @@ data Options = Options
 -- | Default options.
 emptyOpts :: Options
 emptyOpts = Options
-  { pubClasses     = False  -- ^ Don't output generated classes as @public@.
-  , defaultVisitor = False  -- ^ Don't add default visitors.
+  { pubClasses     = False  -- Don't output generated classes as @public@.
+  , defaultVisitor = False  -- Don't add default visitors.
   }
 
 -- | Helper data structure for @getOpt@.
