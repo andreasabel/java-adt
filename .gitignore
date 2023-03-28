@@ -8,6 +8,8 @@ cabal-dev
 *.chs.h
 *.dyn_o
 *.dyn_hi
+*.lock
+.ghc.environment.*
 .hpc
 .hsenv
 .cabal-sandbox/

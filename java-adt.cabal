@@ -17,21 +17,25 @@ description:
 
 -- Compilation fails with GHC <= 7.4 since non-existing import is an error there:
 -- import Prelude hiding ((<>))
-tested-with:        GHC == 7.6.3
-                    GHC == 7.8.4
-                    GHC == 7.10.3
-                    GHC == 8.0.2
-                    GHC == 8.2.2
-                    GHC == 8.4.4
-                    GHC == 8.6.5
-                    GHC == 8.8.4
-                    GHC == 8.10.4
-                    GHC == 9.0.1
+tested-with:
+  GHC == 9.6.1
+  GHC == 9.4.4
+  GHC == 9.2.7
+  GHC == 9.0.2
+  GHC == 8.10.7
+  GHC == 8.8.4
+  GHC == 8.6.5
+  GHC == 8.4.4
+  GHC == 8.2.2
+  GHC == 8.0.2
+  GHC == 7.10.3
+  GHC == 7.8.4
+  GHC == 7.6.3
 
 data-files:         test/Makefile
                     test/*.hs
 
-extra-source-files: CHANGELOG.md
+extra-doc-files:    CHANGELOG.md
                     README.md
 
 source-repository head
@@ -40,7 +44,7 @@ source-repository head
 
 executable java-adt
   hs-source-dirs:   src
-  build-depends:    base >= 4.6 && < 5.0,
+  build-depends:    base >= 4.6 && < 5,
                     array,
                     pretty
   build-tools:      happy >= 1.15,
