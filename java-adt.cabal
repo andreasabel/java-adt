@@ -17,10 +17,12 @@ description:
 
 -- Compilation fails with GHC <= 7.4 since non-existing import is an error there:
 -- import Prelude hiding ((<>))
+-- 2023-12-04: Drop testing with GHC 7
 tested-with:
-  GHC == 9.6.1
-  GHC == 9.4.4
-  GHC == 9.2.7
+  GHC == 9.8.1
+  GHC == 9.6.3
+  GHC == 9.4.8
+  GHC == 9.2.8
   GHC == 9.0.2
   GHC == 8.10.7
   GHC == 8.8.4
@@ -28,9 +30,6 @@ tested-with:
   GHC == 8.4.4
   GHC == 8.2.2
   GHC == 8.0.2
-  GHC == 7.10.3
-  GHC == 7.8.4
-  GHC == 7.6.3
 
 data-files:         test/Makefile
                     test/*.hs
