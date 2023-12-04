@@ -1,13 +1,13 @@
 name:            java-adt
-version:         0.2018.11.4
+version:         1.0.20231204
 build-type:      Simple
 cabal-version:   1.18
 license:         OtherLicense
 license-file:    LICENSE
 author:          Andreas Abel
 maintainer:      Andreas Abel <andreas.abel@gu.se>
-homepage:        http://github.com/andreasabel/java-adt
-bug-reports:     http://github.com/andreasabel/java-adt/issues
+homepage:        https://github.com/andreasabel/java-adt
+bug-reports:     https://github.com/andreasabel/java-adt/issues
 category:        Java
 synopsis:        Create immutable algebraic data structures for Java.
 description:
@@ -39,7 +39,7 @@ extra-doc-files:    CHANGELOG.md
 
 source-repository head
   type:     git
-  location: http://github.com/andreasabel/java-adt.git
+  location: https://github.com/andreasabel/java-adt.git
 
 executable java-adt
   hs-source-dirs:   src

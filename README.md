@@ -1,4 +1,6 @@
-# java-adt
+java-adt
+========
+
 A tool to create immutable algebraic data structures and visitors for Java
 (such as abstract syntax trees).  The input syntax is similar to Haskell data types,
 and they will be compiled to Java class hierarchies.
@@ -6,11 +8,9 @@ and they will be compiled to Java class hierarchies.
 Installation
 ------------
 
-With a running Haskell installation such as the
-[Haskell platform](https://www.haskell.org/platform/),
-simply type into your shell
+With a running [Haskell installation](https://www.haskell.org/ghcup/), simply type into your shell
 ```
-cabal install alex happy java-adt
+cabal install java-adt
 ```
 and make sure your `.cabal/bin/` (or similar) is part of your system PATH.
 
