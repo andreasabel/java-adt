@@ -15,13 +15,11 @@ description:
   (such as abstract syntax trees).  The input syntax is similar to Haskell data types,
   and they will be compiled to Java class hierarchies.
 
--- Compilation fails with GHC <= 7.4 since non-existing import is an error there:
--- import Prelude hiding ((<>))
--- 2023-12-04: Drop testing with GHC 7
 tested-with:
-  GHC == 9.10.0
-  GHC == 9.8.2
-  GHC == 9.6.4
+  GHC == 9.12.1
+  GHC == 9.10.1
+  GHC == 9.8.4
+  GHC == 9.6.6
   GHC == 9.4.8
   GHC == 9.2.8
   GHC == 9.0.2
