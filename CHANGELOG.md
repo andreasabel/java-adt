@@ -1,6 +1,13 @@
 Changelog for java-adt
 ======================
 
+1.0.20251105
+------------
+
+- Drop support for GHC 7.
+- Add option `--version`.
+- Tested with GHC 8.0.2 - 9.12.2.
+
 1.0.20231204
 ------------
 

@@ -6,11 +6,14 @@ import System.Console.GetOpt
 import System.Exit
 import System.IO
 
+import Version (version)
+
 -- | Entry point: parse command line arguments.
 --   Print usage information and exit upon error.
 parseCmdLine :: [String] -> IO (Options, String, Maybe String)
 parseCmdLine argv = do
   let (os, ns, errs) = getOpt Permute optDescrs argv
+  when (Version `elem` os) printVersion
   when (Help `elem` os) $ halt []
   case (ns, errs) of
     ([n]   , []) -> do
@@ -38,6 +41,7 @@ emptyOpts = Options
 data Flag
   = Public
   | Help
+  | Version
   | Visit
   | Output String
   deriving (Eq, Show)
@@ -45,6 +49,7 @@ data Flag
 optDescrs :: [OptDescr Flag]
 optDescrs =
   [ Option ['h','?'] ["help"]   (NoArg Help)   "show usage information"
+  , Option ['V']     ["version"](NoArg Version)"show program version"
   , Option ['p']     ["public"] (NoArg Public) "produce public classes (many files)"
   , Option ['o']     ["output"] (ReqArg Output "FILE") "output file"
   , Option ['d']     ["defaultVisitor"] (NoArg Visit) "produce default visitor (Java 1.5)"
@@ -64,3 +69,9 @@ halt errs = do
   hPutStrLn stderr $ concat errs ++ usageInfo header optDescrs
   exitFailure
   where header = "usage: java-adt [OPTION...] <inputFile>"
+
+-- | Print program version and exit
+printVersion :: IO a
+printVersion = do
+  putStrLn $ unwords [ "java-adt", version ]
+  exitFailure

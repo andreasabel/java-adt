@@ -1,7 +1,7 @@
 name:            java-adt
-version:         1.0.20231204
+version:         1.0.20251105
 build-type:      Simple
-cabal-version:   1.18
+cabal-version:   2.0
 license:         OtherLicense
 license-file:    LICENSE
 author:          Andreas Abel
@@ -17,7 +17,7 @@ description:
 
 tested-with:
   GHC == 9.12.2
-  GHC == 9.10.2
+  GHC == 9.10.3
   GHC == 9.8.4
   GHC == 9.6.7
   GHC == 9.4.8
@@ -30,34 +30,50 @@ tested-with:
   GHC == 8.2.2
   GHC == 8.0.2
 
-data-files:         test/Makefile
-                    test/*.hs
+data-files:
+  test/Makefile
+  test/*.hs
 
-extra-doc-files:    CHANGELOG.md
-                    README.md
+extra-doc-files:
+  CHANGELOG.md
+  README.md
 
 source-repository head
   type:     git
   location: https://github.com/andreasabel/java-adt.git
 
 executable java-adt
-  hs-source-dirs:   src
-  build-depends:    base >= 4.6 && < 5,
-                    array,
-                    pretty
-  build-tools:      happy >= 1.15,
-                    alex >= 3.0
-  default-language: Haskell2010
-  main-is:          Main.hs
-  other-modules:    Lexer
-                    Options
-                    Parser
-                    Printer
-                    Syntax
 
-  ghc-options:      -Wall
-                    -fno-warn-name-shadowing
-                    -fno-warn-unused-imports
+  -- Project definition
+  hs-source-dirs:
+    src
+  main-is:
+    Main.hs
+  other-modules:
+    Lexer
+    Options
+    Parser
+    Printer
+    Syntax
+    Version
+    Paths_java_adt
+  autogen-modules:
+    Paths_java_adt
 
-  if impl(ghc >= 8)
-    ghc-options:    -Wcompat
+  -- Dependencies
+  build-depends:
+      base >= 4.9 && < 5
+    , array
+    , pretty
+  build-tool-depends:
+      alex:alex   >= 3.0
+    , happy:happy >= 1.15
+
+  -- Haskell language settings
+  default-language:
+    Haskell2010
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Wno-name-shadowing
+    -Wno-unused-imports
