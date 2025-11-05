@@ -3,14 +3,10 @@ module Printer where
 import Prelude hiding ((<>))  -- requires GHC >= 7.6 to not be an error
 
 import Data.Char (toLower)
-import Text.PrettyPrint
-    ( Doc, ($+$), (<+>), (<>)
-    , cat, char, comma, equals, lbrace, nest, parens, punctuate, rbrace, render, semi, space, vcat )
-import qualified Text.PrettyPrint as Pretty
 
 import Syntax
 import Options
-import String1 (String1)
+import Pretty
 import qualified String1
 
 type ClassDef = String
@@ -71,7 +67,7 @@ constrToClass opt super params vs c@(Constructor x fs) =
        (vcat (map (\ (Field f t) -> public <+> printType t <+> text f <> semi) fs))
        $+$
        (public <+> text x <+>
-        parens (cat (punctuate (comma<>space) (map (\ (Field f t) -> printType t <+> text f) fs))) <+>
+        parens (printFields fs) <+>
         lbrace
         $+$ (nest ind (vcat (map (\ (Field f _) -> this <> dot <> text f <+> equals <+> text f <> semi) fs)))
         $+$ rbrace)
@@ -88,6 +84,9 @@ constrToClass opt super params vs c@(Constructor x fs) =
   where
   publicOpt doc | pubClasses opt = public <+> doc
                 | otherwise      = doc
+
+printFields :: [Field] -> Doc
+printFields = cat . punctuate (comma <> space) . map (\ (Field f t) -> printType t <+> text f)
 
 -- | Java type application @T<A,B>@.
 jApp :: Doc -> [Doc] -> Doc
@@ -128,13 +127,3 @@ this      = text "this"
 accept    = text "accept"
 v         = text "v"
 visit     = text "visit"
-
--- | Overload 'text' to also work with 'String1'.
-class PrettyString a where
-  text :: a -> Doc
-
-instance PrettyString String where
-  text = Pretty.text
-
-instance PrettyString String1 where
-  text = Pretty.text . String1.toString
