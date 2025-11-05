@@ -1,5 +1,5 @@
 name:            java-adt
-version:         1.0.20251105
+version:         1.1
 build-type:      Simple
 cabal-version:   2.0
 license:         OtherLicense
@@ -49,8 +49,10 @@ executable java-adt
     Main.hs
   other-modules:
     Lexer
+    Java17
     Options
     Parser
+    Pretty
     Printer
     Syntax
     String1
@@ -63,6 +65,7 @@ executable java-adt
   build-depends:
       base >= 4.11 && < 5
     , array
+    , filepath
     , pretty
   build-tool-depends:
       alex:alex   >= 3.0

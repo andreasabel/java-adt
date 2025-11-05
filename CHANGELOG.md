@@ -1,6 +1,14 @@
 Changelog for java-adt
 ======================
 
+1.1
+---
+
+_2025-11-05_
+
+- Add option `--record` for generating Java-17 style ADTs.
+- Tested with GHC 8.4.4 - 9.12.2.
+
 1.0.20251105
 ------------
 

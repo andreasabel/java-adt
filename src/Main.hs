@@ -13,7 +13,9 @@ import Lexer
 import Parser
 import Options
 import Printer
+import Java17  ( printRecords )
 import String1 (String1, pattern (:|), fromString, toString)
+import System.FilePath (takeFileName, dropExtensions)
 
 main :: IO ()
 main = do
@@ -21,12 +23,19 @@ main = do
   (opt, src, dest) <- parseCmdLine =<< getArgs
   -- Parse input file.
   ds' <- parser . alexScanTokens <$> readFile src
-  -- Optionally add default visitor to each class.
-  let ds = if defaultVisitor opt then map addDefaultVisitor ds'
-           else ds'
-  -- Print the structures to .java files.
-  outputClasses opt dest $
-    ds >>= \ d -> dataToClasses opt d ++ dataToVisitors opt d
+  if record opt then do
+    let stem = String1.fromString $ takeFileName $ dropExtensions src
+    let Class _ usesList contents = printRecords stem ds'
+    case dest of
+      Nothing -> putStr contents
+      Just name -> createFile name usesList contents
+  else do
+    -- Optionally add default visitor to each class.
+    let ds = if defaultVisitor opt then map addDefaultVisitor ds'
+             else ds'
+    -- Print the structures to .java files.
+    outputClasses opt dest $
+      ds >>= \ d -> dataToClasses opt d ++ dataToVisitors opt d
 
 -- | Add default visitor to existing visitors of a data type.
 addDefaultVisitor :: Data -> Data
