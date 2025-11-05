@@ -1,7 +1,8 @@
-java-adt=../dist/build/java-adt/java-adt
+java-adt=$(shell cabal list-bin java-adt)
 
 .PRECIOUS : out/*.java out/%.java out
 
+.PHONY: all
 all : out out/Exp.class out/CMM.class out/List.class Stm.class out/CustomVisitorsStraightLine.class out/MJAbsSyn.class
 
 # create default visitor
@@ -28,5 +29,9 @@ out/%.java : %.hs
 
 out :
 	-mkdir $@
+
+.PHONY: debug
+debug:
+	@echo "java-adt = $(java-adt)"
 
 # EOF

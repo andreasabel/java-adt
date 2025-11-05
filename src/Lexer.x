@@ -1,5 +1,7 @@
 {
 module Lexer where
+
+import String1 (String1, fromString)
 }
 
 %wrapper "basic"
@@ -32,12 +34,12 @@ tokens :-
    \(                              { \ _ -> TkOpenParen   }
    \)                              { \ _ -> TkCloseParen  }
 
-   [$alpha $digit \_ \' \< \>]+    { TkId }
+   [$alpha $digit \_ \' \< \>]+    { TkId . fromString }
 
 {
 
 data Token
-  = TkId String
+  = TkId String1
   | TkData       | TkVisitor
   | TkOpenBrace  | TkCloseBrace
   | TkOpenSquare | TkCloseSquare

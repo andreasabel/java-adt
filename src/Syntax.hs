@@ -108,18 +108,18 @@ Grammar:
 
 module Syntax where
 
-import Data.Foldable  -- for ghc 7.6
 import Data.Monoid
+import String1 (String1, toString)
 
-type FieldId  = String
-type ConstrId = String
-type DataId   = String
-type Param    = String
-type ClassId  = String
+type FieldId  = String1
+type ConstrId = String1
+type DataId   = String1
+type Param    = String1
+type ClassId  = String1
 
 data TypeId
-  = TypeId String
-  | Gen    String  -- ^ Type variable.
+  = TypeId String1
+  | Gen    String1  -- ^ Type variable.
   deriving (Eq, Show)
 
 data Visitor = Visitor
@@ -130,7 +130,7 @@ data Visitor = Visitor
 data Type
   = List Type      -- ^ @List<Type>@
   | App Type Type  -- ^ @Type<Type>@
-  | Name String    -- ^ @Type@
+  | Name String1   -- ^ @Type@
   deriving (Eq, Show)
 
 data Field' a = Field
@@ -160,3 +160,8 @@ usesList = getAny . foldMap (Any . isList)
   isList :: Type -> Bool
   isList (List _) = True
   isList _        = False
+
+isTypeVoid :: TypeId -> Bool
+isTypeVoid = \case
+  TypeId s -> toString s == "void"
+  Gen    _ -> False

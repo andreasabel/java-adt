@@ -2,11 +2,16 @@ module Printer where
 
 import Prelude hiding ((<>))  -- requires GHC >= 7.6 to not be an error
 
-import Text.PrettyPrint
 import Data.Char (toLower)
+import Text.PrettyPrint
+    ( Doc, ($+$), (<+>), (<>)
+    , cat, char, comma, equals, lbrace, nest, parens, punctuate, rbrace, render, semi, space, vcat )
+import qualified Text.PrettyPrint as Pretty
 
 import Syntax
 import Options
+import String1 (String1)
+import qualified String1
 
 type ClassDef = String
 
@@ -38,7 +43,7 @@ constrToVisitor opt d@(Data x params cs _) (Visitor name rt) =
             parens (jApp (text c) (map text params) <+> var) <> semi)
        cs)
     $+$ rbrace
-  where var = char $ toLower (head x)
+  where var = char $ toLower (String1.head x)
 
 -- | Entry point 2: construct abstract parent classes and subclasses for data type.
 
@@ -75,7 +80,7 @@ constrToClass opt super params vs c@(Constructor x fs) =
                     public <+> quantReturnType rt <+> accept <+>
                     parens (jApp (text name) (genReturnType rt ++ map text params) <+> v) <+> lbrace
                     $+$
-                    (nest ind $ condsep (rt /= TypeId "void") (text "return")
+                    (nest ind $ condsep (not $ isTypeVoid rt) (text "return")
                       $ v <> dot <> visit <+> (parens this) <> semi)
                     $+$ rbrace) vs)
        )
@@ -123,3 +128,13 @@ this      = text "this"
 accept    = text "accept"
 v         = text "v"
 visit     = text "visit"
+
+-- | Overload 'text' to also work with 'String1'.
+class PrettyString a where
+  text :: a -> Doc
+
+instance PrettyString String where
+  text = Pretty.text
+
+instance PrettyString String1 where
+  text = Pretty.text . String1.toString

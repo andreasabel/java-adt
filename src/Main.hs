@@ -1,11 +1,9 @@
 -- A generator for immutable JAVA datastructures which simulate Haskell data types
 -- Author  : Andreas Abel
 -- Created : 2005-10-17
--- Modified: 2016-11-28
+-- Modified: 2016-11-28, 2025-11-05
 
 module Main where
-
-import Data.Functor  -- for ghc 7.6
 
 import System.Environment
 import System.IO
@@ -15,6 +13,7 @@ import Lexer
 import Parser
 import Options
 import Printer
+import String1 (String1, pattern (:|), fromString, toString)
 
 main :: IO ()
 main = do
@@ -32,10 +31,12 @@ main = do
 -- | Add default visitor to existing visitors of a data type.
 addDefaultVisitor :: Data -> Data
 addDefaultVisitor (Data id params cs vs) = Data id params cs $
-  Visitor (id ++ "Visitor") (Gen $ fresh params) : vs
+  Visitor (id <> fromString "Visitor") (Gen fresh) : vs
   where
-  fresh :: [String] -> String
-  fresh l = head $ filter (`notElem` l) $ map (:[]) $ ['R' .. 'Z'] ++ ['A' .. 'Q']
+  fresh :: String1
+  fresh = case filter (`notElem` params) $ map (:|[]) $ ['R' .. 'Z'] ++ ['A' .. 'Q'] of
+              (x:_) -> x
+              []    -> error "addDefaultVisitor: too many type parameters"
 
 -- | Print generated classes to file or to individual files.
 outputClasses :: Options -> Maybe String -> [Class] -> IO ()
@@ -46,7 +47,7 @@ outputClasses opts dest cs
 -- | Each class one file.
 printToFile :: Class -> IO ()
 printToFile (Class id usesList body) = do
-  let name = id ++ ".java"
+  let name = toString id ++ ".java"
   createFile name usesList $ body ++ "\n"
 
 -- | One file for all classes.
