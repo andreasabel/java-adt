@@ -27,6 +27,7 @@ parseCmdLine argv = do
 data Options = Options
   { pubClasses     :: Bool
   , defaultVisitor :: Bool
+  , record         :: Bool
   }
 
 -- | Default options.
@@ -34,6 +35,7 @@ emptyOpts :: Options
 emptyOpts = Options
   { pubClasses     = False  -- Don't output generated classes as @public@.
   , defaultVisitor = False  -- Don't add default visitors.
+  , record         = False  -- Don't do records (java 17).
   }
 
 -- | Helper data structure for @getOpt@.
@@ -43,6 +45,7 @@ data Flag
   | Help
   | Version
   | Visit
+  | Record
   | Output String
   deriving (Eq, Show)
 
@@ -53,15 +56,21 @@ optDescrs =
   , Option ['p']     ["public"] (NoArg Public) "produce public classes (many files)"
   , Option ['o']     ["output"] (ReqArg Output "FILE") "output file"
   , Option ['d']     ["defaultVisitor"] (NoArg Visit) "produce default visitor (Java 1.5)"
+  , Option []        ["record"] (NoArg Record) "produce records, sealed interfaces, and enums (Java 17)"
   ]
 
 -- | Process a command line option.  Halt if contradictory.
 doFlag :: Flag -> (Options, Maybe String) -> IO (Options, Maybe String)
-doFlag Visit      (opts, s      ) = return (opts{ defaultVisitor = True }, s)
-doFlag Public     (opts, Nothing) = return (opts{ pubClasses = True }, Nothing)
+doFlag Record     (opts, s      )
+  | not (pubClasses opts)
+  , not (defaultVisitor opts)     = return (opts{ record = True }, s)
+doFlag Visit      (opts, s      )
+  | not (record opts)             = return (opts{ defaultVisitor = True }, s)
+doFlag Public     (opts, Nothing)
+  | not (record opts)             = return (opts{ pubClasses = True }, Nothing)
 doFlag (Output s) (opts, Nothing)
   | not (pubClasses opts)         = return (opts, Just s)
-doFlag _ _ = halt ["cannot use both -o and -p\n"]
+doFlag _ _ = halt ["contradictory options"] -- ["cannot use both -o and -p\n"]
 
 -- | Print errors and usage information.
 halt :: [String] -> IO a
